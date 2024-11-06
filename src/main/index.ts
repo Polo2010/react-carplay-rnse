@@ -69,6 +69,7 @@ fs.exists(configPath, (exists) => {
     }
 
     if(config!.canbus) {
+      console.log('Canbus configured: '+config.canConfig)
       canbus = new Canbus('can0',  socket, config!.canConfig)
       canbus.on('lights', (data) => {
         console.log('lights', data)
@@ -77,6 +78,7 @@ fs.exists(configPath, (exists) => {
         mainWindow?.webContents?.send('reverse', data)
       })
     }
+    else console.log('Canbus not configured')
 
 })
 

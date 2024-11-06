@@ -35,6 +35,7 @@ export class Canbus extends EventEmitter {
 
     this.channel.addListener("onMessage", (msg) => {
       let data
+      console.log('Canbus message received: '+msg)
       switch (msg.id) {
         case this.subscriptions?.reverse?.canId:
           data = msg.data[this.subscriptions!.reverse!.byte] & this.subscriptions!.reverse!.mask
