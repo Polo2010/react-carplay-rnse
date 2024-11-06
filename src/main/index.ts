@@ -36,7 +36,7 @@ const EXTRA_CONFIG: ExtraConfig = {
   piMost: false,
   canbus: false,
   bindings: DEFAULT_BINDINGS,
-  most: {},
+  //most: {}, //trying to prevent most initialisation
   canConfig: {}
 }
 
@@ -65,7 +65,7 @@ fs.exists(configPath, (exists) => {
     socket = new Socket(config!, saveSettings)
     if(config!.most) {
       console.log('creating pi most in main')
-      piMost = new PiMost(socket)
+      piMost = new PiMost(socket) // if this fails, then rest of config doesn't get executed - need to improve error handling here
     }
 
     if(config!.canbus) {
@@ -163,7 +163,7 @@ function createWindow(): void {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
   app.commandLine.appendSwitch('autoplay-policy', 'no-user-gesture-required');
-  systemPreferences.askForMediaAccess("microphone")
+  //systemPreferences.askForMediaAccess("microphone") - commented out as appears to be MacOS only...
   mainWindow.webContents.session.webRequest.onHeadersReceived((details, callback) => {
     details.responseHeaders!['Cross-Origin-Opener-Policy'] = ['same-origin'];
     details.responseHeaders!['Cross-Origin-Embedder-Policy'] = ['require-corp'];
