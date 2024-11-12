@@ -37,5 +37,7 @@ export interface CanMessage {
 
 export interface CanConfig {
   reverse?: CanMessage,
-  lights?: CanMessage
+  lights?: CanMessage,
+  headunit?: CanMessage
+
 }

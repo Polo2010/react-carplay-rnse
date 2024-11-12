@@ -40,7 +40,7 @@ function App() {
 
 
   const onKeyDown = (event: KeyboardEvent) => {
-    console.log(event.code)
+    console.log('Keyboard event received: '+event.code)
     if(Object.values(settings!.bindings).includes(event.code)) {
       let action = Object.keys(settings!.bindings).find(key =>
         settings!.bindings[key] === event.code

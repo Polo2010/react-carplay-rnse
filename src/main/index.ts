@@ -69,7 +69,8 @@ fs.exists(configPath, (exists) => {
     }
 
     if(config!.canbus) {
-      console.log('Canbus configured: '+config.canConfig)
+      console.log('Canbus configured:')
+      console.log(config.canConfig)
       canbus = new Canbus('can0',  socket, config!.canConfig)
       canbus.on('lights', (data) => {
         console.log('lights', data)
@@ -77,6 +78,19 @@ fs.exists(configPath, (exists) => {
       canbus.on('reverse', (data) => {
         mainWindow?.webContents?.send('reverse', data)
       })
+      canbus.socket.on('headunitkey', (data) => {
+        console.log('Received headunitkey event: '+data)
+        let mappedKey = config?.bindings[data]
+        console.log('Mapped Key: '+mappedKey)
+        if(mappedKey)
+        {
+          mappedKey = mappedKey.replace(/Arrow|Key/,'')
+          console.log('sending keypress to main window: '+mappedKey)
+          mainWindow?.webContents?.sendInputEvent({type: 'keyDown', keyCode: mappedKey})
+          mainWindow?.webContents?.sendInputEvent({type: 'char', keyCode: mappedKey})
+          mainWindow?.webContents?.sendInputEvent({type: 'keyUp', keyCode: mappedKey})
+        }
+      })      
     }
     else console.log('Canbus not configured')
 
@@ -212,6 +226,7 @@ app.whenReady().then(() => {
   // see https://github.com/alex8088/electron-toolkit/tree/master/packages/utils
   app.on('browser-window-created', (_, window) => {
     optimizer.watchWindowShortcuts(window)
+    //window.webContents.openDevTools()
   })
 
   createWindow()

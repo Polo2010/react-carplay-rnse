@@ -2,6 +2,7 @@ import { ExtraConfig } from "./Globals";
 import { Server } from 'socket.io'
 import { EventEmitter } from 'events'
 import { Stream } from "socketmost/dist/modules/Messages";
+import { debounce } from 'lodash'
 
 export enum MessageNames {
   Connection = 'connection',
@@ -54,4 +55,13 @@ export class Socket extends EventEmitter {
   sendLights(lights: boolean) {
     this.io.emit('lights', lights)
   }
+
+
+  sendHeadUnitkey = debounce(async (key) => {
+    this.emit('headunitkey', key)
+    console.log('headunitkey event emitted: '+key)
+    console.log(`Event Names io: ${this.io.eventNames()}`)
+    console.log(`Event Names Socket: ${this.eventNames()}`)
+  }, 150, {'leading': true,'trailing': false})
+  
 }
