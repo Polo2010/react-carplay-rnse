@@ -14,7 +14,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { ExtraConfig} from "../../../main/Globals";
 import { useCarplayStore } from "../store/store";
 
-const width = window.innerWidth
+const width = window.innerWidth * 1.25 // forces 16:9 video from CarPlay where actual reported screen resolution is 4:3 - need to make this a config param!
 const height = window.innerHeight
 
 const RETRY_DELAY_MS = 15000
@@ -103,6 +103,7 @@ function Carplay({ receivingVideo, setReceivingVideo, settings, command, command
           break
         case 'media':
           //TODO: implement
+          //Work out how to get track details sent to Canbus handler
           break
         case 'command':
           const {
@@ -206,7 +207,7 @@ function Carplay({ receivingVideo, setReceivingVideo, settings, command, command
 
   return (
     <div
-      style={pathname === '/' ? { height: '100%', touchAction: 'none' } : { height: '1px' }}
+      style={pathname === '/' ? { height: window.innerHeight, touchAction: 'none' } : { height: '0px' }}
       id={'main'}
       className="App"
       ref={mainElem}
@@ -253,7 +254,7 @@ function Carplay({ receivingVideo, setReceivingVideo, settings, command, command
           display: 'flex'
         }}
       >
-        <video id="video" style={isPlugged ? { height: '100%' } : undefined} autoPlay muted />
+        <video id="video" style={isPlugged ? { height: '100%', width: '100%', objectFit:'fill' } : undefined} autoPlay muted />
       </div>
     </div>
   )

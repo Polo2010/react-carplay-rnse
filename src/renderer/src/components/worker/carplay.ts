@@ -17,7 +17,25 @@ const handleMessage = (message: CarplayMessage) => {
     postMessage(message, [payload.data.buffer])
   } else if (type === 'audio' && payload.data) {
     postMessage(message, [payload.data.buffer])
+  } else if (type === 'audio' && payload.command == 10) {
+    console.log('Media Play Started')
+    console.log(message)
+    postMessage(message)
+  } else if (type === 'audio' && payload.command == 11) {
+    console.log('Media Play Stopped')
+    console.log(message)
+    postMessage(message)
+  } else if (type === 'media') {
+    if (payload.payload?.media?.MediaSongName) {
+      console.log(payload.payload.media.MediaSongName)
+      console.log(payload.payload.media.MediaAlbumName)
+      console.log(payload.payload.media.MediaArtistName)
+      console.log(payload.payload.media.MediaAPPName)
+    }
+    postMessage(message)
   } else {
+    //console.log('CarPlay message data received: '+type)
+    //console.log(message)
     postMessage(message)
   }
 }

@@ -47,39 +47,49 @@ export class Canbus extends EventEmitter {
           }
           let keyData = digits.join('.')
           let keyPress
+          let debounce = 0
           switch (keyData) {
             case '37.30.01.00.20':
-              keyPress = 'right'
+              keyPress = 'right' //rotary control clockwise
+              debounce = 50      //low debounce to try to make control more responsive
               break
             case '37.30.01.00.40':
-              keyPress = 'left'
+              keyPress = 'left' //rotary control anticlockwise
+              debounce = 50     //low debounce to try to make control more responsive
               break
             case '37.30.01.00.10':
               keyPress = 'selectDown'
+              debounce = 150
               break
             case '37.30.01.80.00':
-              keyPress = 'down'
+              keyPress = 'down' //bottom left on MMI
+              debounce = 150
               break
             case '37.30.01.40.00':
-              keyPress = 'up'
+              keyPress = 'home' //top left on MMI
+              debounce = 150
               break
             case '37.30.01.00.01':
-              keyPress = 'home'
+              keyPress = 'home' //setup key on MMI - should be used for non-CarPlay screen / reboot / something
+              debounce = 150
               break
             case '37.30.01.00.02':
-              keyPress = 'back'
+              keyPress = 'back' //return key on MMI
+              debounce = 150
               break
             case '37.30.01.02.00':
-              keyPress = 'next'
+              keyPress = 'next' //track next
+              debounce = 150
               break
             case '37.30.01.01.00':
-              keyPress = 'prev'
+              keyPress = 'prev' //track prev
+              debounce = 150
               break
           }
 
           if(keyPress) {
             console.log('Head Unit key press: '+keyPress)
-            this.socket.sendHeadUnitKey(keyPress)
+            this.socket.sendHeadUnitKey(keyPress, debounce)
           }
 
           break    

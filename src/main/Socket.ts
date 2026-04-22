@@ -57,11 +57,11 @@ export class Socket extends EventEmitter {
   }
 
 
-  sendHeadUnitkey = debounce(async (key) => {
+  sendHeadUnitKey = debounce(async (key, debounce) => {
     this.emit('headunitkey', key)
     console.log('headunitkey event emitted: '+key)
-    console.log(`Event Names io: ${this.io.eventNames()}`)
-    console.log(`Event Names Socket: ${this.eventNames()}`)
-  }, 150, {'leading': true,'trailing': false})
+    //console.log(`Event Names io: ${this.io.eventNames()}`)
+    //console.log(`Event Names Socket: ${this.eventNames()}`)
+  }, debounce, {'leading': true,'trailing': false})
   
 }
